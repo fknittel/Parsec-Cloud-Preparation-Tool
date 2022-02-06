@@ -965,7 +965,7 @@ foreach ($func in $ScripttaskList) {
     }
 
 StartGPUUpdate -DontPromptPasswordUpdateGPU:$DontPromptPasswordUpdateGPU
-Start-ScheduledTask -TaskName "Setup Team Machine"
+#Start-ScheduledTask -TaskName "Setup Team Machine"
 ProgressWriter -status "Done" -percentcomplete 100
 Write-Host "1. Open Parsec and sign in (Team machines should have automatically signed in if userdata was correct)" -ForegroundColor black -BackgroundColor Green 
 Write-Host "2. Use GPU Updater to update your GPU Drivers!" -ForegroundColor black -BackgroundColor Green 
