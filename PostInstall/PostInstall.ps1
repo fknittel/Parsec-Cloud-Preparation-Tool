@@ -21,13 +21,13 @@ $currentusersid = Get-LocalUser "$env:USERNAME" | Select-Object SID | ft -HideTa
 #Creating Folders and moving script files into System directories
 function setupEnvironment {
     ProgressWriter -Status "Moving files and folders into place" -PercentComplete $PercentComplete
-    if((Test-Path -Path C:\Windows\system32\GroupPolicy\Machine\Scripts\Startup) -eq $true) {} Else {New-Item -Path C:\Windows\system32\GroupPolicy\Machine\Scripts\Startup -ItemType directory | Out-Null}
-    if((Test-Path -Path C:\Windows\system32\GroupPolicy\Machine\Scripts\Shutdown) -eq $true) {} Else {New-Item -Path C:\Windows\system32\GroupPolicy\Machine\Scripts\Shutdown -ItemType directory | Out-Null}
+    #if((Test-Path -Path C:\Windows\system32\GroupPolicy\Machine\Scripts\Startup) -eq $true) {} Else {New-Item -Path C:\Windows\system32\GroupPolicy\Machine\Scripts\Startup -ItemType directory | Out-Null}
+    #if((Test-Path -Path C:\Windows\system32\GroupPolicy\Machine\Scripts\Shutdown) -eq $true) {} Else {New-Item -Path C:\Windows\system32\GroupPolicy\Machine\Scripts\Shutdown -ItemType directory | Out-Null}
     if((Test-Path -Path $env:ProgramData\ParsecLoader) -eq $true) {} Else {New-Item -Path $env:ProgramData\ParsecLoader -ItemType directory | Out-Null}
-    if((Test-Path C:\Windows\system32\GroupPolicy\Machine\Scripts\psscripts.ini) -eq $true) {} Else {Move-Item -Path $path\ParsecTemp\PreInstall\psscripts.ini -Destination C:\Windows\system32\GroupPolicy\Machine\Scripts}
-    if((Test-Path C:\Windows\system32\GroupPolicy\Machine\Scripts\Shutdown\NetworkRestore.ps1) -eq $true) {} Else {Move-Item -Path $path\ParsecTemp\PreInstall\NetworkRestore.ps1 -Destination C:\Windows\system32\GroupPolicy\Machine\Scripts\Shutdown} 
-    if((Test-Path $env:ProgramData\ParsecLoader\clear-proxy.ps1) -eq $true) {} Else {Move-Item -Path $path\ParsecTemp\PreInstall\clear-proxy.ps1 -Destination $env:ProgramData\ParsecLoader}
-    if((Test-Path $env:ProgramData\ParsecLoader\CreateClearProxyScheduledTask.ps1) -eq $true) {} Else {Move-Item -Path $path\ParsecTemp\PreInstall\CreateClearProxyScheduledTask.ps1 -Destination $env:ProgramData\ParsecLoader}
+    #if((Test-Path C:\Windows\system32\GroupPolicy\Machine\Scripts\psscripts.ini) -eq $true) {} Else {Move-Item -Path $path\ParsecTemp\PreInstall\psscripts.ini -Destination C:\Windows\system32\GroupPolicy\Machine\Scripts}
+    #if((Test-Path C:\Windows\system32\GroupPolicy\Machine\Scripts\Shutdown\NetworkRestore.ps1) -eq $true) {} Else {Move-Item -Path $path\ParsecTemp\PreInstall\NetworkRestore.ps1 -Destination C:\Windows\system32\GroupPolicy\Machine\Scripts\Shutdown} 
+    #if((Test-Path $env:ProgramData\ParsecLoader\clear-proxy.ps1) -eq $true) {} Else {Move-Item -Path $path\ParsecTemp\PreInstall\clear-proxy.ps1 -Destination $env:ProgramData\ParsecLoader}
+    #if((Test-Path $env:ProgramData\ParsecLoader\CreateClearProxyScheduledTask.ps1) -eq $true) {} Else {Move-Item -Path $path\ParsecTemp\PreInstall\CreateClearProxyScheduledTask.ps1 -Destination $env:ProgramData\ParsecLoader}
     if((Test-Path $env:ProgramData\ParsecLoader\Automatic-Shutdown.ps1) -eq $true) {} Else {Move-Item -Path $path\ParsecTemp\PreInstall\Automatic-Shutdown.ps1 -Destination $env:ProgramData\ParsecLoader}
     if((Test-Path $env:ProgramData\ParsecLoader\CreateAutomaticShutdownScheduledTask.ps1) -eq $true) {} Else {Move-Item -Path $path\ParsecTemp\PreInstall\CreateAutomaticShutdownScheduledTask.ps1 -Destination $env:ProgramData\ParsecLoader}
     if((Test-Path $env:ProgramData\ParsecLoader\GPU-Update.ico) -eq $true) {} Else {Move-Item -Path $path\ParsecTemp\PreInstall\GPU-Update.ico -Destination $env:ProgramData\ParsecLoader}
@@ -458,8 +458,8 @@ function disable-iesecurity {
 
 #download-files-S3
 function download-resources {
-    ProgressWriter -Status "Downloading DirectX June 2010 Redist" -PercentComplete $PercentComplete
-    (New-Object System.Net.WebClient).DownloadFile("https://download.microsoft.com/download/8/4/A/84A35BF1-DAFE-4AE8-82AF-AD2AE20B6B14/directx_Jun2010_redist.exe", "C:\ParsecTemp\Apps\directx_Jun2010_redist.exe") 
+    #ProgressWriter -Status "Downloading DirectX June 2010 Redist" -PercentComplete $PercentComplete
+    #(New-Object System.Net.WebClient).DownloadFile("https://download.microsoft.com/download/8/4/A/84A35BF1-DAFE-4AE8-82AF-AD2AE20B6B14/directx_Jun2010_redist.exe", "C:\ParsecTemp\Apps\directx_Jun2010_redist.exe") 
     ProgressWriter -Status "Downloading Parsec" -PercentComplete $PercentComplete
     (New-Object System.Net.WebClient).DownloadFile("https://builds.parsecgaming.com/package/parsec-windows.exe", "C:\ParsecTemp\Apps\parsec-windows.exe")
     ProgressWriter -Status "Downloading Parsec Virtual Display Driver" -percentcomplete $PercentComplete
@@ -468,17 +468,18 @@ function download-resources {
     (New-Object System.Net.WebClient).DownloadFile("https://s3.amazonaws.com/parseccloud/image/parsec+desktop.png", "C:\ParsecTemp\parsec+desktop.png")
     (New-Object System.Net.WebClient).DownloadFile("https://s3.amazonaws.com/parseccloud/image/white_ico_agc_icon.ico", "C:\ParsecTemp\white_ico_agc_icon.ico")
     (New-Object System.Net.WebClient).DownloadFile("https://raw.githubusercontent.com/parsec-cloud/Cloud-GPU-Updater/master/GPUUpdaterTool.ps1", "$env:ProgramData\ParsecLoader\GPUUpdaterTool.ps1")
-    ProgressWriter -Status "Downloading Google Chrome" -PercentComplete $PercentComplete
-    (New-Object System.Net.WebClient).DownloadFile("https://dl.google.com/tag/s/dl/chrome/install/googlechromestandaloneenterprise64.msi", "C:\ParsecTemp\Apps\googlechromestandaloneenterprise64.msi")
+    Unblock-File -Path "$env:ProgramData\ParsecLoader\GPUUpdaterTool.ps1"
+    #ProgressWriter -Status "Downloading Google Chrome" -PercentComplete $PercentComplete
+    #(New-Object System.Net.WebClient).DownloadFile("https://dl.google.com/tag/s/dl/chrome/install/googlechromestandaloneenterprise64.msi", "C:\ParsecTemp\Apps\googlechromestandaloneenterprise64.msi")
     }
 
 #install-base-files-silently
 function install-windows-features {
-    ProgressWriter -Status "Installing Chrome" -PercentComplete $PercentComplete
-    start-process -filepath "C:\Windows\System32\msiexec.exe" -ArgumentList '/qn /i "C:\ParsecTemp\Apps\googlechromestandaloneenterprise64.msi"' -Wait
-    ProgressWriter -Status "Installing DirectX June 2010 Redist" -PercentComplete $PercentComplete
-    Start-Process -FilePath "C:\ParsecTemp\Apps\directx_jun2010_redist.exe" -ArgumentList '/T:C:\ParsecTemp\DirectX /Q'-wait
-    Start-Process -FilePath "C:\ParsecTemp\DirectX\DXSETUP.EXE" -ArgumentList '/silent' -wait
+    #ProgressWriter -Status "Installing Chrome" -PercentComplete $PercentComplete
+    #start-process -filepath "C:\Windows\System32\msiexec.exe" -ArgumentList '/qn /i "C:\ParsecTemp\Apps\googlechromestandaloneenterprise64.msi"' -Wait
+    #ProgressWriter -Status "Installing DirectX June 2010 Redist" -PercentComplete $PercentComplete
+    #Start-Process -FilePath "C:\ParsecTemp\Apps\directx_jun2010_redist.exe" -ArgumentList '/T:C:\ParsecTemp\DirectX /Q'-wait
+    #Start-Process -FilePath "C:\ParsecTemp\DirectX\DXSETUP.EXE" -ArgumentList '/silent' -wait
     ProgressWriter -Status "Installing Direct Play" -PercentComplete $PercentComplete
     Install-WindowsFeature Direct-Play | Out-Null
     ProgressWriter -Status "Installing .net 3.5" -PercentComplete $PercentComplete
@@ -571,7 +572,7 @@ function disable-network-window {
 
 #Enable Pointer Precision 
 function enhance-pointer-precision {
-    ProgressWriter -Status "Enabling enchanced pointer precision" -PercentComplete $PercentComplete
+    ProgressWriter -Status "Enabling enhanced pointer precision" -PercentComplete $PercentComplete
     Set-Itemproperty -Path 'HKCU:\Control Panel\Mouse' -Name MouseSpeed -Value 1 | Out-Null
     }
 
@@ -625,7 +626,7 @@ function disable-lock {
 
 #set wallpaper
 function set-wallpaper {
-    ProgressWriter -Status "Setting the Parsec logo ass the computer wallpaper" -PercentComplete $PercentComplete
+    ProgressWriter -Status "Setting the Parsec logo as the computer wallpaper" -PercentComplete $PercentComplete
     if((Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\System) -eq $true) {} Else {New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies" -Name "System" | Out-Null}
     if((Test-RegistryValue -path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\System -value Wallpaper) -eq $true) {Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\System -Name Wallpaper -value "C:\ParsecTemp\parsec+desktop.png" | Out-Null} Else {New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\System -Name Wallpaper -PropertyType String -value "C:\ParsecTemp\parsec+desktop.png" | Out-Null}
     if((Test-RegistryValue -path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\System -value WallpaperStyle) -eq $true) {Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\System -Name WallpaperStyle -value 2 | Out-Null} Else {New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\System -Name WallpaperStyle -PropertyType String -value 2 | Out-Null}
@@ -720,8 +721,8 @@ function AudioInstall {
 
 #Creates shortcut for the GPU Updater tool
 function gpu-update-shortcut {
-    (New-Object System.Net.WebClient).DownloadFile("https://raw.githubusercontent.com/parsec-cloud/Cloud-GPU-Updater/master/GPUUpdaterTool.ps1", "$env:ProgramData\ParsecLoader\GPUUpdaterTool.ps1")
-    Unblock-File -Path "$env:ProgramData\ParsecLoader\GPUUpdaterTool.ps1"
+    #(New-Object System.Net.WebClient).DownloadFile("https://raw.githubusercontent.com/parsec-cloud/Cloud-GPU-Updater/master/GPUUpdaterTool.ps1", "$env:ProgramData\ParsecLoader\GPUUpdaterTool.ps1")
+    #Unblock-File -Path "$env:ProgramData\ParsecLoader\GPUUpdaterTool.ps1"
     ProgressWriter -Status "Creating GPU Updater icon on Desktop" -PercentComplete $PercentComplete
     $Shell = New-Object -ComObject ("WScript.Shell")
     $ShortCut = $Shell.CreateShortcut("$path\GPU Updater.lnk")
@@ -828,9 +829,9 @@ Function InstallParsecVDD {
 }
 
 #Apps that require human intervention
-function Install-Gaming-Apps {
-    ProgressWriter -Status "Installing Parsec, ViGEm https://github.com/ViGEm/ViGEmBus and 7Zip" -PercentComplete $PercentComplete
-    Install7Zip
+function Install-Parsec {
+    ProgressWriter -Status "Installing Parsec" -PercentComplete $PercentComplete
+    #Install7Zip
     InstallParsec
     #if((Test-RegistryValue -path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -value "Parsec.App.0") -eq $true) {Set-ItemProperty -path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name "Parsec.App.0" -Value "C:\Program Files\Parsec\parsecd.exe" | Out-Null} Else {New-ItemProperty -path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name "Parsec.App.0" -Value "C:\Program Files\Parsec\parsecd.exe" | Out-Null}
     Start-Process -FilePath "C:\Program Files\Parsec\parsecd.exe"
@@ -929,12 +930,12 @@ Write-Host -foregroundcolor red "
 PromptUserAutoLogon -DontPromptPasswordUpdateGPU:$DontPromptPasswordUpdateGPU
 $ScripttaskList = @(
 "setupEnvironment";
-"addRegItems";
+#"addRegItems";
 "create-directories";
-"disable-iesecurity";
+#"disable-iesecurity";
 "download-resources";
 "install-windows-features";
-"force-close-apps";
+#"force-close-apps";
 "disable-network-window";
 "disable-logout";
 "disable-lock";
@@ -943,19 +944,19 @@ $ScripttaskList = @(
 "enhance-pointer-precision";
 "enable-mousekeys";
 "set-time";
-"set-wallpaper";
-"Create-AutoShutdown-Shortcut";
-"Create-One-Hour-Warning-Shortcut";
+#"set-wallpaper";
+#"Create-AutoShutdown-Shortcut";
+#"Create-One-Hour-Warning-Shortcut";
 "disable-server-manager";
-"Install-Gaming-Apps";
+"Install-Parsec";
 "disable-devices";
 "InstallParsecVDD";
 "Server2019Controller";
-"gpu-update-shortcut";
+#"gpu-update-shortcut";
 "clean-up";
 "clean-up-recent";
 "provider-specific";
-"TeamMachineSetupScheduledTask"
+#"TeamMachineSetupScheduledTask"
 )
 
 foreach ($func in $ScripttaskList) {
